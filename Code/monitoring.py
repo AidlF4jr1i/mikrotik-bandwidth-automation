@@ -24,8 +24,8 @@ ISP_GATEWAYS = {
     "isp2": "9.9.9.9"
 }
 
-TELEGRAM_BOT_TOKEN = "7781361596:AAFwmHkJFMEpKfFW91EEkTiGqUaCQj_FvbE"
-CHAT_ID = "1386580081"
+TELEGRAM_BOT_TOKEN = "#ADD Your Token Here"
+CHAT_ID = "#ADD Your ChatID Here"
 
 # Buat folder log jika belum ada
 LOG_DIR = "Log_monitoring"
