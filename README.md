@@ -53,7 +53,7 @@ The system was evaluated in four scenarios, comparing manual configuration again
 
 The network is designed with two ISP routers for redundancy and a central admin router that manages traffic distribution. The automation scripts are executed from an administrator's machine connected to the same management switch.
 
-![Network Topology](Topologi/Topologi_Utama_TA.png)
+![Network Topology](Topology/Topologi_Utama_TA.png)
 
 ---
 
