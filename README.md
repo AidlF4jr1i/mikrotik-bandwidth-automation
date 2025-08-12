@@ -1,80 +1,124 @@
-# 📡 Network Automation for Bandwidth Optimization
+# 📡 Auto-Balancing Network: An Adaptive Bandwidth Optimization System
 
-This repository contains the full implementation and documentation of the final project titled **"Implementasi Network Automation untuk Optimasi Bandwidth pada Jaringan Komputer"** conducted at the Faculty of Computer Science, Sriwijaya University.
+This repository contains the full implementation of the final project **"Implementation of Network Automation for Bandwidth Optimization in Computer Networks"** from the Faculty of Computer Science, Sriwijaya University. This system intelligently manages network traffic across dual-ISP links to maximize bandwidth and ensure high availability.
+
+## 🎥 Project Demo
+
+Click the thumbnail below to watch a full demonstration of the system in action, including automated configuration, real-time monitoring, live stress testing, and automated mitigation with Telegram alerts.
+
+[![Project Demo](https://img.youtube.com/vi/FZYJ8l-MY5c/0.jpg)](https://youtu.be/FZYJ8l-MY5c)
+
+---
 
 ## 🧠 Project Overview
 
-The project addresses the critical need for dynamic bandwidth optimization in computer networks using **Network Automation**. Traditional static/manual configurations often fail to adapt to high or fluctuating traffic conditions. To solve this, a Python-based automation system utilizing **Paramiko** (SSH automation) was developed.
+In environments with dynamic traffic, manual network configuration is inefficient and prone to errors, often leading to bottlenecks and poor performance. This project solves that problem by introducing an intelligent automation system built with Python.
 
-### ✅ Objectives
+The system uses the **Paramiko** library to connect to MikroTik routers via SSH, deploying adaptive **Load Balancing (PCC)** and a **Failover** mechanism. Its core feature is a real-time monitoring module that detects network stress (e.g., high CPU load) and automatically executes mitigation strategies—from adjusting traffic ratios to rerouting all traffic to a stable connection.
 
-- Automate bandwidth allocation using Load Balancing (PCC method).
-- Replace manual configurations with adaptive scripts.
-- Improve QoS parameters such as **Throughput**, **Packet Loss**, **Delay**, and **Jitter**.
-- Implement real-time monitoring and alert via **Telegram bot**.
+### ✨ Key Features
 
-## 🛠 Technologies & Tools
+- **Automated Configuration**: Deploys complex network setups (IP, NAT, Mangle, PCC) to multiple routers with a single script.
+- **Intelligent Monitoring**: Continuously tracks router CPU load to detect performance degradation in real-time.
+- **Adaptive Mitigation**: Automatically adjusts traffic distribution ratios (e.g., from 60:40 to 20:80) when a link is under stress.
+- **Automated Failover**: Reroutes 100% of traffic to a healthy ISP connection if mitigation is insufficient, ensuring service continuity.
+- **Real-time Alerts**: Integrates with the **Telegram API** to instantly notify administrators of detected issues and actions taken.
 
-- **Python 3**
-- **Paramiko** (SSH automation library)
-- **MikroTik RouterOS**
-- **Visual Studio Code**
-- **Wireshark** (Traffic Capture)
-- **Telegram API** (Notifications)
-- **RB941-2nD MikroTik Routers**
-- **Stress Testing Scripts**
+---
 
-## 📊 Experimental Scenarios
+## 🛠️ Technologies & Tools
 
-The project tested four configurations:
+- **Core Logic**: Python 3
+- **Network Automation**: Paramiko (SSH)
+- **Monitoring & Alerts**: Telegram API (`requests` library)
+- **Stress Testing**: Custom GUI tool built with Tkinter, Psutil, & Scapy
+- **Data Analysis**: Pandas & Matplotlib for parsing Wireshark captures
+- **Hardware**: MikroTik RB941-2nD Routers
+- **Protocols**: PCC, NAT, Recursive Gateway Failover
 
-1. **Skenario 1** – Manual bandwidth management with single ISP.
-2. **Skenario 2** – Single ISP under stress test (no automation).
-3. **Skenario 3** – Two ISPs with PCC Load Balancing (automated).
-4. **Skenario 4** – Two ISPs with PCC + stress test + monitoring + alerting.
+---
 
-| Scenario | Throughput ↑ | Packet Loss ↓ |
-|----------|--------------|----------------|
-| Manual (S1) | 2.92 Mbps | 22.8% |
-| Automated (S4) | 11.98 Mbps | 2.1% |
+## 📊 Performance Results
 
-## 🔁 Topology
+The system was evaluated in four scenarios, comparing manual configuration against the automated system under normal and high-stress conditions. The automation provided a dramatic improvement in Quality of Service (QoS).
 
-The final system used:
+| Parameter | Manual (Single ISP, Stressed) | Automated (Dual ISP, Stressed) | Improvement |
+| :--- | :---: | :---: | :---: |
+| **Throughput** | 2.12 Mbps | **9.6 Mbps** | **+352%** ▲ |
+| **Packet Loss**| 22.8% | **2.9%** | **-87%** ▼ |
 
-- 3 Routers (ISP1, ISP2, Admin Router)
-- 1 Client Device
-- 1 Admin Laptop (runs Python scripts & monitoring)
-- 1 Switch
+---
 
-Implemented automation includes:
+## 🏗️ System Architecture & Topology
 
-- Auto IP assignment
-- NAT & PCC rules
-- Failover recursive gateway
-- Monitoring CPU usage
-- Real-time Telegram alerts
+The network is designed with two ISP routers for redundancy and a central admin router that manages traffic distribution. The automation scripts are executed from an administrator's machine connected to the same management switch.
+
+![Network Topology](Topologi/Topologi_Utama_TA.png)
+
+---
 
 ## 📂 Repository Structure
 
+```
+.
+├── 📁 Code/
+│   ├── autoConfig.py      # Script for initial router configuration
+│   ├── monitoring.py      # Main script for monitoring and mitigation
+│   ├── Strest_tes.py      # GUI-based tool for stress testing
+│   └── analysis.py        # Script for QoS analysis from .csv captures
+│
+├── 📁 Topologi/
+│   └── Topologi_Utama_TA.png # Network architecture diagram
+│
+└── 📜 README.md
+```
 
+### 🗂️ Dataset
 
+The dataset used for QoS analysis (`analysis.py`) contains packet capture data from Wireshark during the four test scenarios. It is available for download for result replication purposes.
 
-## 🚀 How to Run
+➡️ **[Download Dataset (Google Drive)](https://drive.google.com/open?id=1P_ZR4eY4HQ-dkBK5CI_VCGTLUg7kok1m&usp=drive_fs)**
 
-1. Ensure MikroTik routers are accessible via SSH.
-2. Configure IP addresses as per `docs/Topology_Design.png`.
-3. Run `config_automation.py` to apply router configurations.
-4. Use `stress_test.py` to simulate strest test on router(choose one).
-5. Monitor system using `monitoring_bot.py`.
+---
+
+## 🚀 How to Run the System & Replicate Tests
+
+Follow these steps to deploy the system and replicate the test scenarios.
+
+1.  **Setup Hardware**: Configure the MikroTik routers on the network according to the diagram in the `Topologi/` folder. Ensure all devices are connected and reachable via SSH from the administrator's machine.
+
+2.  **Install Dependencies**: Install the required Python libraries.
+    ```bash
+    pip install paramiko requests pandas matplotlib psutil
+    ```
+
+3.  **Initial Configuration (Scenario 3 & 4)**: Run the auto-configuration script to apply the base Load Balancing and Failover rules to all routers.
+    ```bash
+    python Code/autoConfig.py
+    ```
+
+4.  **Run Monitoring & Mitigation System (Scenario 4)**: Launch the intelligent monitoring system. This script will run continuously, watch for network stress, and listen for Telegram commands.
+    ```bash
+    python Code/monitoring.py
+    ```
+
+5.  **Simulate Network Stress (Scenario 2 & 4)**: To test the system's reliability, use the `Strest_tes.py` tool to apply a controlled traffic load to one of the ISP routers. This is a critical step to observe the automated mitigation and failover responses from `monitoring.py`.
+    ```bash
+    python Code/Strest_tes.py
+    ```
+
+---
 
 ## 📌 Conclusion
 
 By implementing Network Automation, this project demonstrated a significant improvement in network performance and efficiency, minimizing manual intervention and enhancing scalability for future deployments.
 
+This work serves as a practical blueprint for building resilient, self-managing networks capable of handling the demands of modern digital infrastructure.
+
+---
+
 ## 📬 Contact
 
 Ahmad Aidil Fajri  
 📧 ahmadaidilfajri0@gmail.com  
-🏫 Universitas Sriwijaya, Teknik Komputer D3
-
+🎓 Universitas Sriwijaya, Teknik Komputer D3
